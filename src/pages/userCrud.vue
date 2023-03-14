@@ -54,7 +54,10 @@
                     Avartar
                 </th>
                 <th scope="col" class="px-6 py-3">
-                     Name
+                     First Name
+                </th>
+                <th scope="col" class="px-6 py-3">
+                     Last Name
                 </th>
                 <th scope="col" class="px-6 py-3">
                     Email
@@ -65,22 +68,25 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="user in state.users" :key="user._id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <tr v-for="(user, index) in state.users.data" :key="user.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    {{user._id}}
+                    {{user.id}}
                 </th>
                 <td class="px-6 py-4">
-                    <img :src="user.url" class="rounded-full" width="40" height="40" alt="">
+                    <img :src="user.avatar" class="rounded-full" width="40" height="40" alt="">
                 </td>
                 <td class="px-6 py-4">
-                    {{user.username}}
+                    {{user.first_name}}
+                </td>
+                <td class="px-6 py-4">
+                    {{user.last_name}}
                 </td>
                 <td class="px-6 py-4">
                     {{user.email}}
                 </td>
                 <td class="px-6 py-4 flex">
                     <div class="my-auto">
-                            <button type="button" @click="destroy(user._id)" class="text-gray-900 bg-white border border-gray-300 font-medium rounded-lg text-sm p-2 mr-2 mb-2">Delete</button>
+                            <button type="button" @click="destroy(index)" class="text-gray-900 bg-white border border-gray-300 font-medium rounded-lg text-sm p-2 mr-2 mb-2">Delete</button>
                     </div>
                 </td>
             </tr>
@@ -134,9 +140,10 @@ export default {
             state.form.url = '';
 
         }
-        async function destroy(id) {
-            await axios.delete(`/users/${id}`);
-        state.users = state.users.filter((user)=>{user._id!== id})
+        async function destroy(index) {
+            // await axios.delete(`/users/${id}`);
+            console.log(state.users.data)
+        state.users.data.value= state.users.data.value.filter((user, id)=>{id !== index})
         }
 
         return {state, prev, next, submit, destroy}
